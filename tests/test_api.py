@@ -65,6 +65,31 @@ def test_txt_upload_returns_400(client):
     assert response.json()["detail"]
 
 
+def test_text_bytes_as_png_returns_400_without_saved_file(client, tmp_path):
+    response = client.post(
+        "/found",
+        files={"image": ("fake.png", b"this is not really a png", "image/png")},
+        data={"place": "Cafe", "note": "fake png"},
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "File is not a valid image."
+    images_dir = tmp_path / "images"
+    assert list(images_dir.iterdir()) == []
+
+
+def test_items_response_has_image_url_and_no_image_path(client):
+    _post_found(client)
+
+    response = client.get("/items")
+
+    assert response.status_code == 200
+    items = response.json()
+    assert len(items) == 1
+    assert items[0]["image_url"].startswith("/images/")
+    assert "image_path" not in items[0]
+
+
 def test_claimed_item_excluded_from_search(client):
     item_id = _post_found(client).json()["item_id"]
 

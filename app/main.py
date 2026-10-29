@@ -1,9 +1,11 @@
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import numpy as np
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.staticfiles import StaticFiles
+from PIL import Image
 from pydantic import BaseModel
 
 from app import db, matching
@@ -35,6 +37,13 @@ class SearchRequest(BaseModel):
 
 class StatusRequest(BaseModel):
     status: str
+
+
+def _serialize_item(item: dict) -> dict:
+    result = dict(item)
+    image_path = result.pop("image_path", "")
+    result["image_url"] = f"/images/{Path(image_path).name}"
+    return result
 
 
 @app.post("/found")
@@ -70,9 +79,16 @@ async def create_found(
     image_path = image_dir / f"{uuid.uuid4().hex}{suffix}"
     image_path.write_bytes(data)
 
-    vector = embed_image(image_path).detach().cpu().numpy().astype(np.float32).reshape(-1)
+    try:
+        with Image.open(image_path) as uploaded:
+            uploaded.verify()
+        vector = embed_image(image_path).detach().cpu().numpy().astype(np.float32).reshape(-1)
+    except Exception:
+        image_path.unlink(missing_ok=True)
+        raise HTTPException(status_code=400, detail="File is not a valid image.")
+
     item_id = db.insert_item(image_path, vector, place=place, note=note)
-    return db.get_item(item_id)
+    return _serialize_item(db.get_item(item_id))
 
 
 @app.post("/search")
@@ -82,7 +98,7 @@ def search_items(request: SearchRequest):
 
 @app.get("/items")
 def get_items():
-    return db.list_items()
+    return [_serialize_item(item) for item in db.list_items()]
 
 
 @app.get("/items/{item_id}")
@@ -90,7 +106,7 @@ def get_item(item_id: int):
     item = db.get_item(item_id)
     if item is None:
         raise HTTPException(status_code=404, detail="Item not found.")
-    return item
+    return _serialize_item(item)
 
 
 @app.patch("/items/{item_id}/status")
@@ -102,4 +118,4 @@ def update_status(item_id: int, request: StatusRequest):
         )
     if not db.set_status(item_id, request.status):
         raise HTTPException(status_code=404, detail="Item not found.")
-    return db.get_item(item_id)
+    return _serialize_item(db.get_item(item_id))

@@ -68,3 +68,5 @@ User auth, claims workflow, Postgres/SQLAlchemy, React, mobile app, face recogni
 
 - REFERENCE_NOTES.md (if present) summarises a third-party repo: read only when working on matching/preprocess. Ideas only, never copy code.
 
+
+- Never list files recursively (it floods context with .venv). Use: git ls-files. Never read .venv/.
