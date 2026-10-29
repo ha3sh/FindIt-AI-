@@ -1,0 +1,213 @@
+/* FindIt AI · campus board styling */
+
+#MainMenu,
+footer {
+  visibility: hidden;
+}
+
+/* Sidebar shell */
+[data-testid="stSidebar"] {
+  background: #0f1620;
+  border-right: 1px solid #1b2533;
+  padding-top: 1.1rem;
+}
+
+[data-testid="stSidebar"] > div {
+  background: #0f1620;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.2rem 0 1.25rem;
+}
+
+.brand-pin {
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.brand-name {
+  color: #f3f6fa;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.brand-tag {
+  color: #8a94a6;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin-top: 0.15rem;
+  text-transform: uppercase;
+}
+
+.side-label {
+  color: #8a94a6;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin: 0.6rem 0 0.45rem;
+  text-transform: uppercase;
+}
+
+.side-card {
+  background: #121a25;
+  border: 1px solid #1f2a3a;
+  border-radius: 14px;
+  color: #8a94a6;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin-top: 1.4rem;
+  padding: 0.85rem 0.9rem;
+}
+
+/* Hero */
+.board-hero {
+  padding: 0.35rem 0 1rem;
+}
+
+.rule {
+  background: #b6ff1a;
+  border-radius: 2px;
+  height: 2px;
+  margin-bottom: 0.7rem;
+  opacity: 0.85;
+  width: 42px;
+}
+
+.eyebrow {
+  color: #b6ff1a;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.board-hero h1 {
+  color: #f3f6fa;
+  font-size: 3.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  margin: 0.55rem 0 0.7rem;
+}
+
+.board-hero h1 .lime {
+  color: #b6ff1a;
+}
+
+.board-hero p {
+  color: #8a94a6;
+  font-size: 1.02rem;
+  margin: 0;
+  max-width: 34rem;
+}
+
+/* Stats */
+.stats-card {
+  background: #121a25;
+  border: 1px solid #1f2a3a;
+  border-radius: 18px;
+  padding: 1.25rem 1.3rem;
+}
+
+.stats-card .num {
+  color: #f3f6fa;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.stats-card .num span {
+  color: #8a94a6;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.stats-card .sub {
+  color: #8a94a6;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+h2,
+h3 {
+  font-weight: 800 !important;
+  letter-spacing: -0.02em;
+}
+
+/* Item cards */
+.card {
+  background: #121a25;
+  border: 1px solid #1f2a3a;
+  border-radius: 18px;
+  margin-bottom: 14px;
+  padding: 12px;
+}
+
+.card-img {
+  border-radius: 14px;
+  display: block;
+  height: 180px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.pill {
+  background: rgba(182, 255, 26, 0.12);
+  border-radius: 999px;
+  color: #b6ff1a;
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-top: 0.7rem;
+  padding: 0.16rem 0.6rem;
+}
+
+.card-place {
+  color: #f3f6fa;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-top: 0.55rem;
+}
+
+.card-note {
+  color: #8a94a6;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  margin-top: 0.2rem;
+}
+
+.muted {
+  color: #8a94a6;
+}
+
+/* Buttons */
+.stButton > button {
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.stButton > button[kind="primary"] {
+  background: #b6ff1a;
+  border: 1px solid #b6ff1a;
+  color: #0b1118;
+}
+
+.stButton > button[kind="secondary"] {
+  background: #111923;
+  border: 1px solid #1f2a3a;
+  color: #f3f6fa;
+}
+
+[data-testid="stSidebar"] .stButton > button {
+  border-radius: 10px;
+  justify-content: flex-start;
+  text-align: left;
+}

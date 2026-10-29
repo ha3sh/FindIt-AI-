@@ -70,3 +70,5 @@ User auth, claims workflow, Postgres/SQLAlchemy, React, mobile app, face recogni
 
 
 - Never list files recursively (it floods context with .venv). Use: git ls-files. Never read .venv/.
+
+- UI is Streamlit only. Look comes from CSS injected via st.markdown plus .streamlit/config.toml. No React, JS frameworks, npm, Tailwind or CDN assets.
