@@ -33,6 +33,7 @@ app.mount("/images", StaticFiles(directory=_image_dir), name="images")
 class SearchRequest(BaseModel):
     description: str
     k: int = 5
+    place: str | None = None
 
 
 class StatusRequest(BaseModel):
@@ -93,7 +94,7 @@ async def create_found(
 
 @app.post("/search")
 def search_items(request: SearchRequest):
-    return matching.search(request.description, k=max(1, request.k))
+    return matching.search(request.description, k=max(1, request.k), place=request.place)
 
 
 @app.get("/items")

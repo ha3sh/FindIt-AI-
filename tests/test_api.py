@@ -90,6 +90,28 @@ def test_items_response_has_image_url_and_no_image_path(client):
     assert "image_path" not in items[0]
 
 
+def test_search_place_filters_before_ranking(client):
+    library_id = _post_found(
+        client, data={"place": "Library", "note": "black bag"}
+    ).json()["item_id"]
+    cafe_id = _post_found(
+        client, data={"place": "Cafe", "note": "black bag"}
+    ).json()["item_id"]
+
+    filtered = client.post(
+        "/search", json={"description": "a black bag", "k": 5, "place": " library "}
+    )
+    assert filtered.status_code == 200
+    results = filtered.json()
+    assert [result["item_id"] for result in results] == [library_id]
+    assert results[0]["place"] == "Library"
+    assert cafe_id not in [result["item_id"] for result in results]
+
+    unfiltered = client.post("/search", json={"description": "a black bag", "k": 5})
+    assert unfiltered.status_code == 200
+    assert {result["item_id"] for result in unfiltered.json()} == {library_id, cafe_id}
+
+
 def test_claimed_item_excluded_from_search(client):
     item_id = _post_found(client).json()["item_id"]
 

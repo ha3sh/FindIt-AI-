@@ -7,8 +7,15 @@ from app import db
 from app.embedding import embed_text, rank
 
 
-def search(description: str, k: int = 5) -> list[dict]:
+def search(description: str, k: int = 5, place: str | None = None) -> list[dict]:
     rows = db.list_items(status="unclaimed", include_embedding=True)
+    if place is not None:
+        target = place.strip().casefold()
+        if target:
+            rows = [
+                row for row in rows
+                if (row["place"] or "").strip().casefold() == target
+            ]
     if not rows:
         return []
 

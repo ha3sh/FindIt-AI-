@@ -160,9 +160,10 @@ def explore():
             if not description.strip():
                 st.warning("Add a short description before searching.")
             else:
-                results, search_error = api_post(
-                    "/search", json={"description": description.strip(), "k": k}
-                )
+                payload = {"description": description.strip(), "k": k}
+                if spot != "Everywhere":
+                    payload["place"] = spot
+                results, search_error = api_post("/search", json=payload)
                 if search_error:
                     st.error(search_error)
                 else:
@@ -173,15 +174,11 @@ def explore():
     if st.session_state.get("searched"):
         if results and max(item["score"] for item in results) < LOW_CONFIDENCE:
             st.warning("No confident match. Try more detail or check back later.")
-        visible = [
-            item for item in results
-            if spot == "Everywhere" or (item.get("place") or "") == spot
-        ]
         st.markdown("### Search results")
-        if not visible:
+        if not results:
             st.info("No found items matched this search yet.")
         else:
-            render_grid(visible, with_scores=True)
+            render_grid(results, with_scores=True)
     else:
         latest = sorted(unclaimed, key=lambda item: item.get("item_id", 0), reverse=True)
         st.markdown("### Around campus")
